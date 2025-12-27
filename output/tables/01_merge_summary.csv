@@ -1,0 +1,5 @@
+dataset,n_rows,n_cols
+GSS Panel,5215,4297
+ANES-GSS Joint,1164,736
+Merged (joint_data),5215,5032
+With ANES vote,1164,NA

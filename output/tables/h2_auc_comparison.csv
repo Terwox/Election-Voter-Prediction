@@ -1,0 +1,5 @@
+model,AUC
+Demographics,0.731
++ Symbolic,0.74
++ Explicit,0.764
+Both,0.768

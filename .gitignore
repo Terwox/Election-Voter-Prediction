@@ -1,0 +1,19 @@
+# Data files (too large for git, and some require data agreements)
+data/raw/*.dta
+data/raw/*.zip
+data/raw/*.csv
+data/raw/*.pdf
+data/processed/*.rds
+
+# R artifacts
+.Rhistory
+.RData
+.Rproj.user/
+
+# Model files (can be regenerated)
+output/models/*.rds
+
+# OS files
+.DS_Store
+Thumbs.db
+nul
