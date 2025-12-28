@@ -30,16 +30,76 @@ rq1_data <- analytic_data %>%
     trust_r, fair_r, helpful_r,
     # Authoritarianism
     obey, thnkself, auth_index,
-    # Institutional confidence
+    # Institutional confidence (original)
     consci_r, conpress_r, confed_r, coneduc_r,
     # Religion
     attend, fund,
     # Economic
-    eqwlth, finrela, satfin
+    eqwlth, finrela, satfin,
+
+    # =========================================================================
+    # EXTENDED FISHING EXPEDITION (~50 additional variables)
+    # =========================================================================
+
+    # Spending priorities
+    natspac, natenvir, natheal, natcity, natcrime, natdrug,
+    nateduc, natrace, natarms, nataid, natfare, natsci,
+
+    # Civil liberties / free speech
+    spkath, spkrac, spkcom, spkmil, spkhomo,
+
+    # Social attitudes
+    cappun, gunlaw, courts, grass,
+
+    # Religion deep dive
+    reliten, postlife, pray, bible,
+
+    # Gender role attitudes
+    fehome, fework, fepol, fepres,
+
+    # Abortion
+    abany, abdefect, abrape, abpoor,
+
+    # Sexual morality
+    premarsx, homosex, xmarsex,
+
+    # Happiness/wellbeing
+    happy, health, life, hapmar,
+
+    # Work/economic
+    class, getahead, satjob, wrkslf, wrkstat, union,
+
+    # More institutional confidence
+    conbus, conclerg, conlabor, conmedic, contv, conjudge, conlegis, conarmy,
+
+    # Racial contact
+    closeblk, closewht, racmar, affrmact,
+
+    # Oddballs / long shots
+    tvhours, news, socbar, socfrend, socrel, childs, sibs,
+    divorce, marital, born, granborn, hunt, owngun, spanking,
+    letdie1, suicide1, fear, anomia5, workhard
+
     # NOTE: Excluding partyid and polviews - tautological predictors
     # ("Republicans voted Republican" is not insight)
-  ) %>%
-  drop_na()
+  )
+
+# Check missingness before imputation
+message("Initial cases: ", nrow(rq1_data))
+message("Variables with >50% missing will be dropped")
+
+# Drop variables with >50% missing
+missing_pct <- colMeans(is.na(rq1_data))
+vars_to_keep <- names(missing_pct)[missing_pct < 0.5]
+rq1_data <- rq1_data %>% select(all_of(vars_to_keep))
+message("Variables retained: ", ncol(rq1_data) - 1)
+
+# Simple median imputation for remaining missingness (RF handles this reasonably)
+rq1_data <- rq1_data %>%
+  mutate(across(where(is.numeric), ~if_else(is.na(.), median(., na.rm = TRUE), .)))
+
+# Drop any remaining rows with NA (outcome or categorical)
+rq1_data <- rq1_data %>% drop_na()
 
 message("RQ1 complete cases: ", nrow(rq1_data))
 message("Number of predictors: ", ncol(rq1_data) - 1)

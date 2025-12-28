@@ -173,7 +173,124 @@ analytic_data <- analytic_data %>%
 
     # Political
     polviews = coalesce(polviews_2, polviews_1a, polviews_1b),  # 1-7, 1=extremely lib
-    partyid = coalesce(partyid_2, partyid_1a, partyid_1b)  # 0-6, 0=strong dem
+    partyid = coalesce(partyid_2, partyid_1a, partyid_1b),  # 0-6, 0=strong dem
+
+  )
+
+# =============================================================================
+# 2d-extended. Extended fishing expedition variables
+# Helper function to safely coalesce columns that may not exist
+# =============================================================================
+safe_coalesce <- function(df, ...) {
+  cols <- c(...)
+  existing <- cols[cols %in% names(df)]
+  if (length(existing) == 0) return(rep(NA_real_, nrow(df)))
+  if (length(existing) == 1) return(df[[existing]])
+  reduce(df[existing], coalesce)
+}
+
+analytic_data <- analytic_data %>%
+  mutate(
+    # --- Spending priorities (1=too little, 2=about right, 3=too much) ---
+    natspac = safe_coalesce(., "natspac_2", "natspac_1a", "natspac_1b"),
+    natenvir = safe_coalesce(., "natenvir_2", "natenvir_1a", "natenvir_1b"),
+    natheal = safe_coalesce(., "natheal_2", "natheal_1a", "natheal_1b"),
+    natcity = safe_coalesce(., "natcity_2", "natcity_1a", "natcity_1b"),
+    natcrime = safe_coalesce(., "natcrime_2", "natcrime_1a", "natcrime_1b"),
+    natdrug = safe_coalesce(., "natdrug_2", "natdrug_1a", "natdrug_1b"),
+    nateduc = safe_coalesce(., "nateduc_2", "nateduc_1a", "nateduc_1b"),
+    natrace = safe_coalesce(., "natrace_2", "natrace_1a", "natrace_1b"),
+    natarms = safe_coalesce(., "natarms_2", "natarms_1a", "natarms_1b"),
+    nataid = safe_coalesce(., "nataid_2", "nataid_1a", "nataid_1b"),
+    natfare = safe_coalesce(., "natfare_2", "natfare_1a", "natfare_1b"),
+    natsci = safe_coalesce(., "natsci_2", "natsci_1a", "natsci_1b"),
+
+    # --- Civil liberties / Free speech (1=yes, 2=no) ---
+    spkath = safe_coalesce(., "spkath_2", "spkath_1a", "spkath_1b"),
+    spkrac = safe_coalesce(., "spkrac_2", "spkrac_1a", "spkrac_1b"),
+    spkcom = safe_coalesce(., "spkcom_2", "spkcom_1a", "spkcom_1b"),
+    spkmil = safe_coalesce(., "spkmil_2", "spkmil_1a", "spkmil_1b"),
+    spkhomo = safe_coalesce(., "spkhomo_2", "spkhomo_1a", "spkhomo_1b"),
+
+    # --- Social attitudes ---
+    cappun = safe_coalesce(., "cappun_2", "cappun_1a", "cappun_1b"),
+    gunlaw = safe_coalesce(., "gunlaw_2", "gunlaw_1a", "gunlaw_1b"),
+    courts = safe_coalesce(., "courts_2", "courts_1a", "courts_1b"),
+    grass = safe_coalesce(., "grass_2", "grass_1a", "grass_1b"),
+
+    # --- Religion deep dive ---
+    reliten = safe_coalesce(., "reliten_2", "reliten_1a", "reliten_1b"),
+    postlife = safe_coalesce(., "postlife_2", "postlife_1a", "postlife_1b"),
+    pray = safe_coalesce(., "pray_2", "pray_1a", "pray_1b"),
+    bible = safe_coalesce(., "bible_2", "bible_1a", "bible_1b"),
+
+    # --- Gender role attitudes ---
+    fehome = safe_coalesce(., "fehome_2", "fehome_1a", "fehome_1b"),
+    fework = safe_coalesce(., "fework_2", "fework_1a", "fework_1b"),
+    fepol = safe_coalesce(., "fepol_2", "fepol_1a", "fepol_1b"),
+    fepres = safe_coalesce(., "fepres_2", "fepres_1a", "fepres_1b"),
+
+    # --- Abortion ---
+    abany = safe_coalesce(., "abany_2", "abany_1a", "abany_1b"),
+    abdefect = safe_coalesce(., "abdefect_2", "abdefect_1a", "abdefect_1b"),
+    abrape = safe_coalesce(., "abrape_2", "abrape_1a", "abrape_1b"),
+    abpoor = safe_coalesce(., "abpoor_2", "abpoor_1a", "abpoor_1b"),
+
+    # --- Sexual morality ---
+    premarsx = safe_coalesce(., "premarsx_2", "premarsx_1a", "premarsx_1b"),
+    homosex = safe_coalesce(., "homosex_2", "homosex_1a", "homosex_1b"),
+    xmarsex = safe_coalesce(., "xmarsex_2", "xmarsex_1a", "xmarsex_1b"),
+
+    # --- Happiness/wellbeing ---
+    happy = safe_coalesce(., "happy_2", "happy_1a", "happy_1b"),
+    health = safe_coalesce(., "health_2", "health_1a", "health_1b"),
+    life = safe_coalesce(., "life_2", "life_1a", "life_1b"),
+    hapmar = safe_coalesce(., "hapmar_2", "hapmar_1a", "hapmar_1b"),
+
+    # --- Work/economic ---
+    class = safe_coalesce(., "class_2", "class_1a", "class_1b"),
+    getahead = safe_coalesce(., "getahead_2", "getahead_1a", "getahead_1b"),
+    satjob = safe_coalesce(., "satjob_2", "satjob_1a", "satjob_1b"),
+    wrkslf = safe_coalesce(., "wrkslf_2", "wrkslf_1a", "wrkslf_1b"),
+    wrkstat = safe_coalesce(., "wrkstat_2", "wrkstat_1a", "wrkstat_1b"),
+    union = safe_coalesce(., "union_2", "union_1a", "union_1b"),
+
+    # --- Confidence in MORE institutions ---
+    conbus = safe_coalesce(., "conbus_2", "conbus_1a", "conbus_1b"),
+    conclerg = safe_coalesce(., "conclerg_2", "conclerg_1a", "conclerg_1b"),
+    conlabor = safe_coalesce(., "conlabor_2", "conlabor_1a", "conlabor_1b"),
+    conmedic = safe_coalesce(., "conmedic_2", "conmedic_1a", "conmedic_1b"),
+    contv = safe_coalesce(., "contv_2", "contv_1a", "contv_1b"),
+    conjudge = safe_coalesce(., "conjudge_2", "conjudge_1a", "conjudge_1b"),
+    conlegis = safe_coalesce(., "conlegis_2", "conlegis_1a", "conlegis_1b"),
+    conarmy = safe_coalesce(., "conarmy_2", "conarmy_1a", "conarmy_1b"),
+
+    # --- Racial contact ---
+    closeblk = safe_coalesce(., "closeblk_2", "closeblk_1a", "closeblk_1b"),
+    closewht = safe_coalesce(., "closewht_2", "closewht_1a", "closewht_1b"),
+    racmar = safe_coalesce(., "racmar_2", "racmar_1a", "racmar_1b"),
+    affrmact = safe_coalesce(., "affrmact_2", "affrmact_1a", "affrmact_1b"),
+
+    # --- Oddballs / Long shots ---
+    tvhours = safe_coalesce(., "tvhours_2", "tvhours_1a", "tvhours_1b"),
+    news = safe_coalesce(., "news_2", "news_1a", "news_1b"),
+    socbar = safe_coalesce(., "socbar_2", "socbar_1a", "socbar_1b"),
+    socfrend = safe_coalesce(., "socfrend_2", "socfrend_1a", "socfrend_1b"),
+    socrel = safe_coalesce(., "socrel_2", "socrel_1a", "socrel_1b"),
+    childs = safe_coalesce(., "childs_2", "childs_1a", "childs_1b"),
+    sibs = safe_coalesce(., "sibs_2", "sibs_1a", "sibs_1b"),
+    divorce = safe_coalesce(., "divorce_2", "divorce_1a", "divorce_1b"),
+    marital = safe_coalesce(., "marital_2", "marital_1a", "marital_1b"),
+    born = safe_coalesce(., "born_2", "born_1a", "born_1b"),
+    granborn = safe_coalesce(., "granborn_2", "granborn_1a", "granborn_1b"),
+    hunt = safe_coalesce(., "hunt_2", "hunt_1a", "hunt_1b"),
+    owngun = safe_coalesce(., "owngun_2", "owngun_1a", "owngun_1b"),
+    spanking = safe_coalesce(., "spanking_2", "spanking_1a", "spanking_1b"),
+    letdie1 = safe_coalesce(., "letdie1_2", "letdie1_1a", "letdie1_1b"),
+    suicide1 = safe_coalesce(., "suicide1_2", "suicide1_1a", "suicide1_1b"),
+    fear = safe_coalesce(., "fear_2", "fear_1a", "fear_1b"),
+    anomia5 = safe_coalesce(., "anomia5_2", "anomia5_1a", "anomia5_1b"),
+    workhard = safe_coalesce(., "workhard_2", "workhard_1a", "workhard_1b")
   )
 
 # =============================================================================
