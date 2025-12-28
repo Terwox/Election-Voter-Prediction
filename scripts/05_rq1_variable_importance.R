@@ -35,9 +35,9 @@ rq1_data <- analytic_data %>%
     # Religion
     attend, fund,
     # Economic
-    eqwlth, finrela, satfin,
-    # Political
-    polviews, partyid
+    eqwlth, finrela, satfin
+    # NOTE: Excluding partyid and polviews - tautological predictors
+    # ("Republicans voted Republican" is not insight)
   ) %>%
   drop_na()
 
