@@ -109,12 +109,29 @@ Prior work has focused on:
 
 The racial attitude-completion relationship documented here extends this literature by identifying a content-specific form of selection bias particularly relevant to research on race and politics.
 
+### Race Stratified Analysis
+
+One potential concern is whether the explicit racism effect is confounded by respondent race. To address this, we conducted stratified analyses:
+
+**Correlation between race and explicit racism**: r = -0.04 (negligible; whites actually scored *slightly lower* on explicit racism)
+
+**Stratified results** (controlling for demographics):
+
+| Sample | Explicit Racism OR | 95% CI | p |
+|--------|-------------------|--------|---|
+| White respondents only (n=1,136) | **1.31** | 1.05-1.66 | **.021** |
+| Non-white respondents only (n=408) | 1.22 | 0.92-1.63 | .173 |
+
+**Interpretation**: The explicit racism effect **holds within white respondents alone**. Among whites only, each 1-point increase in explicit racism is associated with 31% higher odds of completing the joint study. The non-white sample shows the same directional effect but lacks statistical power.
+
+The race x explicit_racism interaction was not significant (p = .40), indicating the effect does not differ by race. This rules out race as a confound—the finding reflects within-race variation in explicit attitudes, not between-race demographic differences.
+
 ### Limitations
 
 1. **Explicit racism measures only on Ballots A/B**: ~1/3 structural missingness reduces power
 2. **Cannot determine direction**: The data show correlation, not whether racial attitudes causally influence participation
 3. **Single study**: Replication needed across other panel studies and time periods
-4. **Magnitude is modest**: OR = 1.25 represents a small-to-medium effect
+4. **Magnitude is modest**: OR = 1.25-1.31 represents a small-to-medium effect
 
 ## Conclusion
 
@@ -131,4 +148,4 @@ Stark, T. H., van Maaren, F. M., Krosnick, J. A., & Sood, G. (2022). The impact 
 ---
 
 *Analysis conducted using GSS 2016-2020 Panel (Release 1a) and ANES-GSS 2020 Joint Study data.*
-*Code repository: scripts/03_h1_attrition.R*
+*Code: scripts/03_h1_attrition.R, scripts/03b_h1_race_stratified.R*

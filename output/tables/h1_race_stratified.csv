@@ -1,0 +1,5 @@
+term,estimate,std.error,statistic,p.value,conf.low,conf.high,sample
+explicit_racism,1.314,0.118,2.313,0.021,1.046,1.662,White only
+symbolic_racism,1.628,0.375,1.301,0.193,0.782,3.398,White only
+explicit_racism,1.222,0.147,1.364,0.173,0.916,1.632,Non-white only
+symbolic_racism,1.275,0.696,0.349,0.727,0.325,5.021,Non-white only
