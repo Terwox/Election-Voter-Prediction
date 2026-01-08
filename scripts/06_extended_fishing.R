@@ -480,6 +480,31 @@ anes_patterns <- c("^v20", "^aprv", "^rate", "^poltrt", "^defund", "^strvbias",
                    "^covopen", "^lkelyvot", "^letin1a")
 all_vars <- all_vars[!grepl(paste(anes_patterns, collapse = "|"), all_vars)]
 
+# CRITICAL: Remove wave-suffixed duplicates to avoid multicollinearity
+# The script creates coalesced versions (e.g., "wrkwayup") from wave-specific
+# versions (e.g., "wrkwayup_2", "wrkwayup_1a", "wrkwayup_1b") but the raw
+# wave-specific columns also exist in the data. Including both causes:
+# 1. Multicollinearity (near-identical variables)
+# 2. Inflated importance for redundant measures of same construct
+wave_suffix_pattern <- "_2$|_1a$|_1b$"
+all_vars <- all_vars[!grepl(wave_suffix_pattern, all_vars)]
+
+message("After removing wave-suffixed duplicates: ", length(all_vars), " variables")
+
+# Also remove _r recoded versions that are perfectly correlated with originals
+# These are reverse-coded versions created for scales but are redundant for RF
+# (e.g., conpress_r = 4 - conpress, wrkwayup_r = 6 - wrkwayup)
+# Keep the original raw versions for interpretability
+recode_vars_to_remove <- c("conpress_r", "confed_r", "consci_r", "coneduc_r",
+                           "wrkwayup_r", "racdif1_r", "racdif2_r", "racdif3_r",
+                           "racdif4_r", "trust_r", "fair_r", "helpful_r")
+all_vars <- all_vars[!all_vars %in% recode_vars_to_remove]
+
+# Also remove "race" since "white" is derived from it (redundant)
+all_vars <- all_vars[all_vars != "race"]
+
+message("After removing recodes and redundant demographics: ", length(all_vars), " variables")
+
 message("Total potential predictors (excluding ANES tautologies): ", length(all_vars))
 
 # Check missingness
