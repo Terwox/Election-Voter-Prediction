@@ -17,3 +17,6 @@ output/models/*.rds
 .DS_Store
 Thumbs.db
 nul
+
+# OMX local runtime artifacts
+.omx/
